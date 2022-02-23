@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.Limelight;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Index;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,7 +28,7 @@ public class RobotContainer {
 
   private final Shooter shooter = new Shooter();
   private final Intake intake = new Intake();
-  private final Index indexer = new Index();
+  private final Indexer indexer = new Indexer();
   private final Limelight limelighter = new Limelight();
   private final PS4Controller controller = new PS4Controller(0);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -45,6 +45,11 @@ public class RobotContainer {
       shooter.shoot(0);
     }
   }, shooter);
+  private RunCommand intaker = new RunCommand(
+    () -> {if (controller.getTriangleButtonPressed()) {
+      intake.runIntake();
+    }
+  }, intake);
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -61,6 +66,7 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
 		shooter.setDefaultCommand(shootrun);
+    intake.setDefaultCommand(intaker);
     drivetrain.setDefaultCommand(drive);
 	}
 
