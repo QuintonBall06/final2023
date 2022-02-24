@@ -11,13 +11,14 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Intake extends SubsystemBase {
-  private final Spark pickupmotor = new Spark(0);
-  private final Spark intakeMover = new Spark(1);
-  private final DigitalInput toplimit = new DigitalInput(7);
-  private final DigitalInput bottomlimit = new DigitalInput(6);
+  private final Spark pickupmotor = new Spark(Constants.p_intakeSuckerUpper);
+  private final Spark intakeMover = new Spark(Constants.p_intakeMover);
+  private final DigitalInput toplimit = new DigitalInput(Constants.p_topLimit);
+  private final DigitalInput bottomlimit = new DigitalInput(Constants.p_bottomLimit);
 
   /** Creates a new ExampleSubsystem. */
   public Intake() {

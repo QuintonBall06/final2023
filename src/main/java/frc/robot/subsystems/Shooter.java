@@ -7,10 +7,11 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-  private final Spark lMotor = new Spark(3);
-  private final Spark rMotor = new Spark(4);
+  private final Spark lMotor = new Spark(Constants.p_LShootMotor);
+  private final Spark rMotor = new Spark(Constants.p_RShootMotor);
   
 
   /** Creates a new ExampleSubsystem. */

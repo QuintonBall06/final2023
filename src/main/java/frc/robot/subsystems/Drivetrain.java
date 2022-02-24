@@ -11,12 +11,15 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
-  private final CANSparkMax leftfrontmotor = new CANSparkMax(2,MotorType.kBrushless);
-  private final CANSparkMax rightfrontmotor = new CANSparkMax(4,MotorType.kBrushless);
-  private final CANSparkMax rightbackmotor = new CANSparkMax(5,MotorType.kBrushless);
-  private final CANSparkMax leftbackomotor = new CANSparkMax(3,MotorType.kBrushless);
+  private final CANSparkMax leftfrontmotor = new CANSparkMax(Constants.p_leftFrontMotor,MotorType.kBrushless);
+  private final CANSparkMax leftbackomotor = new CANSparkMax(Constants.p_leftBackMotor,MotorType.kBrushless);
+  private final CANSparkMax rightfrontmotor = new CANSparkMax(Constants.p_rightFrontMotor,MotorType.kBrushless);
+  private final CANSparkMax rightbackmotor = new CANSparkMax(Constants.p_rightBackMotor,MotorType.kBrushless);
+
+
   private final MotorControllerGroup leftcontroler = new MotorControllerGroup(leftfrontmotor,leftbackomotor);
   private final MotorControllerGroup rightcontroler = new MotorControllerGroup(rightfrontmotor,rightbackmotor);
   private final DifferentialDrive drivetrain = new DifferentialDrive(leftcontroler,rightcontroler);
