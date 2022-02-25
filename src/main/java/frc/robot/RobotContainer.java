@@ -12,9 +12,10 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.PS4Controller;
-
+import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,12 +26,12 @@ import edu.wpi.first.wpilibj.PS4Controller;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
-
   private final Shooter shooter = new Shooter();
   private final Intake intake = new Intake();
   private final Indexer indexer = new Indexer();
   private final Limelight limelighter = new Limelight();
   private final PS4Controller controller = new PS4Controller(0);
+  private final DigitalInput inputSensor = new DigitalInput(Constants.p_beamBreakerI);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -50,6 +51,15 @@ public class RobotContainer {
       intake.runIntake();
     }
   }, intake);
+  private RunCommand index = new RunCommand(
+    () -> {if (inputSensor.get()) {
+      indexer.useIndexer();
+    }
+  }, intake);
+
+
+
+
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -68,10 +78,14 @@ public class RobotContainer {
 		shooter.setDefaultCommand(shootrun);
     intake.setDefaultCommand(intaker);
     drivetrain.setDefaultCommand(drive);
+    indexer.setDefaultCommand(index);
 	}
 
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
+    final RunCommand m_autoCommand = new RunCommand(
+    () -> drivetrain.autoArcadeDrive(), drivetrain);
+
     return m_autoCommand;
   }
 }

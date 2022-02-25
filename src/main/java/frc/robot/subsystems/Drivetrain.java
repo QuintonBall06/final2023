@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import com.revrobotics.RelativeEncoder;
 
 public class Drivetrain extends SubsystemBase {
   private final CANSparkMax leftfrontmotor = new CANSparkMax(Constants.p_leftFrontMotor,MotorType.kBrushless);
@@ -24,6 +25,7 @@ public class Drivetrain extends SubsystemBase {
   private final MotorControllerGroup rightcontroler = new MotorControllerGroup(rightfrontmotor,rightbackmotor);
   private final DifferentialDrive drivetrain = new DifferentialDrive(leftcontroler,rightcontroler);
   
+  private RelativeEncoder encoder = leftbackomotor.getEncoder();
 
   /** Creates a new ExampleSubsystem. */
   public Drivetrain() {
@@ -32,6 +34,15 @@ public class Drivetrain extends SubsystemBase {
   public void arcadeDrive(double leftyaxis, double rightxaxis){
     drivetrain.arcadeDrive(leftyaxis, rightxaxis);
   }
+
+  public void autoArcadeDrive(){
+    while(encoder.getPosition() < 6){
+      arcadeDrive(-1, 0);
+    }
+    arcadeDrive(0, 0);
+  }
+          //run until getPosition returns 6
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
