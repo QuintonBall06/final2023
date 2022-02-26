@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.DigitalInput;
+import frc.robot.subsystems.Climber;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -29,6 +30,7 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter();
   private final Intake intake = new Intake();
   private final Indexer indexer = new Indexer();
+  private final Climber climber = new Climber();
   private final Limelight limelighter = new Limelight();
   private final PS4Controller controller = new PS4Controller(0);
   private final DigitalInput inputSensor = new DigitalInput(Constants.p_beamBreakerI);
@@ -55,10 +57,21 @@ public class RobotContainer {
     () -> {if (inputSensor.get()) {
       indexer.useIndexer();
     }
-  }, intake);
-
-
-
+  }, indexer);
+  private RunCommand climb = new RunCommand(
+    () -> {if (controller.getSquareButton()) {
+      climber.winch(-1);
+    }
+    if (controller.getCircleButton()) {
+      climber.lock();
+    }
+    if (controller.getR2Button() || controller.getL2Button()) {
+      climber.climberMove(1, controller.getR2Button(),controller.getL2Button());
+    }
+  }, climber);
+//winch is square
+//circle is lock
+//dpad up and down
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -79,6 +92,7 @@ public class RobotContainer {
     intake.setDefaultCommand(intaker);
     drivetrain.setDefaultCommand(drive);
     indexer.setDefaultCommand(index);
+    climber.setDefaultCommand(climb);
 	}
 
   public Command getAutonomousCommand() {

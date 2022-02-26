@@ -34,11 +34,19 @@ public final class Constants {
 
 //CAN
     public static int p_pidgeon = 0;
-    public static int p_gearShift = 1;
-    public static int p_leftFrontMotor = 2;
-    public static int p_leftBackMotor = 3;
-    public static int p_rightFrontMotor = 4; 
-    public static int p_rightBackMotor = 5;
-    public static int p_climberWinch = 6;
-    public static int p_climberLock = 7;
+    public static int p_leftFrontMotor = 1;
+    public static int p_leftBackMotor = 2;
+    public static int p_rightFrontMotor = 3; 
+    public static int p_rightBackMotor = 4;
+    public static int p_climberWinch = 5;
+
+// PCM
+    public static int p_gearShiftI = 0;
+    public static int p_gearShiftO = 1;
+    public static int p_leftLockI = 4;
+    public static int p_leftLockO = 5;
+    public static int p_rightLockI = 6;
+    public static int p_rightLockO = 7;
+
+
 }
