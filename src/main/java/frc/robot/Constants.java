@@ -37,10 +37,10 @@ public final class Constants {
 //CAN
     public static int c_portPidgeon = 0;
     public static int c_pnuematicsControlModule = 1;
-    public static int c_portLeftFrontMotor = 2;
-    public static int c_portLeftBackMotor = 3;
-    public static int c_portRightFrontMotor = 4; 
-    public static int c_portRightBackMotor = 5;
+    public static int c_portRightFrontMotor = 2; 
+    public static int c_portRightBackMotor = 3;
+    public static int c_portLeftFrontMotor = 4;
+    public static int c_portLeftBackMotor = 5;
     public static int c_portClimberWinch = 6;
     public static int c_portClimberHook = 7;
 

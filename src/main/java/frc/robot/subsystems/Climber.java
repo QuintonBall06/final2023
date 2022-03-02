@@ -24,7 +24,7 @@ public class Climber extends SubsystemBase {
     private final DoubleSolenoid m_leftLock = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,Constants.c_portLeftLockI, Constants.c_portLeftLockO);
     private final DoubleSolenoid m_rightLock = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,Constants.c_portRightLockI, Constants.c_portRightLockO);
 
-    private final CANSparkMax m_climberHook = new CANSparkMax(Constants.c_portClimber,MotorType.kBrushless);
+    private final CANSparkMax m_climberHook = new CANSparkMax(Constants.c_portClimberHook,MotorType.kBrushless);
 
     //This is the constructor 
     public Climber() {
