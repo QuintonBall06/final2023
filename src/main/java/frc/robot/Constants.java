@@ -12,41 +12,44 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static int c_controllerChannel = 1;
+    
 //PWM
-    public static int p_intakeSuckerUpper = 0;
-    public static int p_intakeMover = 1;
-    public static int p_indexerUp = 2;
-    public static int p_LShootMotor = 3;
-    public static int p_RShootMotor = 4;
-    public static int p_climber = 5;
+    public static int c_portIntakeSuckerUpper = 0;
+    public static int c_portIntakeMover = 1;
+    public static int c_portIndexerUp = 2;
+    public static int c_portLShootMotor = 3;
+    public static int c_portRShootMotor = 4;
+
 
 
 //DIO
-    public static int p_bottomLimit = 0;
-    public static int p_topLimit = 1;
-    public static int p_beamBreakerI = 2;
-    public static int p_beamBrealerO = 3;
-    public static int p_indexerMid = 4;
-    public static int p_LShootEncoderI = 5;
-    public static int p_LShootEncoderO = 6;
-    public static int p_RShootEncoderI = 7;
-    public static int p_RShootEncoderO = 8;
+    public static int c_portBottomLimit = 0;
+    public static int c_portTopLimit = 1;
+    public static int c_portBeamBreakerI = 2;
+    public static int c_portBeamBrealerO = 3;
+    public static int c_portIndexerMid = 4;
+    public static int c_portLShootEncoderI = 5;
+    public static int c_portLShootEncoderO = 6;
+    public static int c_portRShootEncoderI = 7;
+    public static int c_portRShootEncoderO = 8;
 
 //CAN
-    public static int p_pidgeon = 0;
-    public static int p_leftFrontMotor = 1;
-    public static int p_leftBackMotor = 2;
-    public static int p_rightFrontMotor = 3; 
-    public static int p_rightBackMotor = 4;
-    public static int p_climberWinch = 5;
+    public static int c_portPidgeon = 0;
+    public static int c_portLeftFrontMotor = 1;
+    public static int c_portLeftBackMotor = 2;
+    public static int c_portRightFrontMotor = 3; 
+    public static int c_portRightBackMotor = 4;
+    public static int c_portClimberWinch = 5;
+    public static int c_portClimber = 7;
 
 // PCM
-    public static int p_gearShiftI = 0;
-    public static int p_gearShiftO = 1;
-    public static int p_leftLockI = 4;
-    public static int p_leftLockO = 5;
-    public static int p_rightLockI = 6;
-    public static int p_rightLockO = 7;
+    public static int c_portGearShiftI = 0;
+    public static int c_portGearShiftO = 1;
+    public static int c_portLeftLockI = 4;
+    public static int c_portLeftLockO = 5;
+    public static int c_portRightLockI = 6;
+    public static int c_portRightLockO = 7;
 
 
 }

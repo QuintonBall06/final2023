@@ -33,7 +33,7 @@ public class RobotContainer {
   private final Climber climber = new Climber();
   private final Limelight limelighter = new Limelight();
   private final PS4Controller controller = new PS4Controller(0);
-  private final DigitalInput inputSensor = new DigitalInput(Constants.p_beamBreakerI);
+  private final DigitalInput inputSensor = new DigitalInput(Constants.c_portBeamBreakerI);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings

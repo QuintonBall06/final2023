@@ -4,38 +4,39 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+// Import for the spark motor controller
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+//Import for the limit switches
 import edu.wpi.first.wpilibj.DigitalInput;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+// The indexer class controls when the indexer runs, which carries the balls to the shooter
 public class Indexer extends SubsystemBase {
-  private final Spark indexerUp = new Spark(2);
-  private final DigitalInput halfLimit = new DigitalInput(Constants.p_indexerMid);
-  private final DigitalInput inputSensor = new DigitalInput(Constants.p_beamBreakerI);
+  private final Spark m_indexerUp = new Spark(2);
+  private final DigitalInput m_halfLimit = new DigitalInput(Constants.c_portIndexerMid);
+  private final DigitalInput m_inputSensor = new DigitalInput(Constants.c_portBeamBreakerI);
   /** Creates a new ExampleSubsystem. */
+  // This is the constructor
   public Indexer() {
     
-    
   }
-  public void useIndexer(){
-    if (inputSensor.get() & !halfLimit.get()){
-      while (!halfLimit.get()){
-        indexerUp.set(1);
+  // The indexer runs automaticlly from the beamBreaker to the limitSwitch
+  public void useIndexer() {
+    if (m_inputSensor.get() & !m_halfLimit.get()) {
+      while (!m_halfLimit.get()) {
+        m_indexerUp.set(1);
       }
-      indexerUp.set(0);
-    } else if  (inputSensor.get() & halfLimit.get()){
-      while (halfLimit.get()){
-        indexerUp.set(1);
+      m_indexerUp.set(0);
+    } else if  (m_inputSensor.get() & m_halfLimit.get()) {
+      while (m_halfLimit.get()) {
+        m_indexerUp.set(1);
       }
-      while (!halfLimit.get()){
-        indexerUp.set(1);
+      while (!m_halfLimit.get()) {
+        m_indexerUp.set(1);
       }
-      indexerUp.set(0);
+      m_indexerUp.set(0);
     }
   }
 

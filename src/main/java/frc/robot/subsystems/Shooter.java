@@ -8,20 +8,21 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-
+// The shooter class controls how the ball is launched from the robot
 public class Shooter extends SubsystemBase {
-  private final Spark lMotor = new Spark(Constants.p_LShootMotor);
-  private final Spark rMotor = new Spark(Constants.p_RShootMotor);
+  private final Spark m_leftMotor = new Spark(Constants.c_portLShootMotor);
+  private final Spark m_rightMotor = new Spark(Constants.c_portRShootMotor);
   
 
   /** Creates a new ExampleSubsystem. */
+  // This is the Constructor
   public Shooter() {
     
   }
-  
-  public void shoot(double speed){
-      lMotor.set(speed);
-      rMotor.set(speed*-1);
+  // When a button is pressed, the motors are spun in opposite directions so that the ball will be launched
+  public void shoot(double speed) {
+      m_leftMotor.set(speed);
+      m_rightMotor.set(speed*-1);
   }
 
   @Override
