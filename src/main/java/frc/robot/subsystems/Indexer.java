@@ -14,9 +14,9 @@ import frc.robot.Constants;
 
 // The indexer class controls when the indexer runs, which carries the balls to the shooter
 public class Indexer extends SubsystemBase {
-  private final Spark m_indexerUp = new Spark(2);
+  private final Spark m_indexerUp = new Spark(Constants.c_portIndexerUp);
   private final DigitalInput m_halfLimit = new DigitalInput(Constants.c_portIndexerMid);
-  private final DigitalInput m_inputSensor = new DigitalInput(Constants.c_portBeamBreakerI);
+  private final DigitalInput m_ballDetector = new DigitalInput(Constants.c_portBeamBreakerI);
   /** Creates a new ExampleSubsystem. */
   // This is the constructor
   public Indexer() {
@@ -24,12 +24,12 @@ public class Indexer extends SubsystemBase {
   }
   // The indexer runs automaticlly from the beamBreaker to the limitSwitch
   public void useIndexer() {
-    if (m_inputSensor.get() & !m_halfLimit.get()) {
+    if (m_ballDetector.get() & !m_halfLimit.get()) {
       while (!m_halfLimit.get()) {
         m_indexerUp.set(1);
       }
       m_indexerUp.set(0);
-    } else if  (m_inputSensor.get() & m_halfLimit.get()) {
+    } else if  (m_ballDetector.get() & m_halfLimit.get()) {
       while (m_halfLimit.get()) {
         m_indexerUp.set(1);
       }

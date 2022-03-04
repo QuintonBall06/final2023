@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.MotorTest;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,6 +35,7 @@ public class RobotContainer {
   private final Limelight limelighter = new Limelight();
   private final PS4Controller controller = new PS4Controller(0);
   private final DigitalInput inputSensor = new DigitalInput(Constants.c_portBeamBreakerI);
+  private final MotorTest testingObject = new MotorTest();
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -73,6 +75,17 @@ public class RobotContainer {
 //circle is lock
 //dpad up and down
 
+
+//TESTING MOTORS - UNCOMMENT THIS, THEN COMMENT OUT ALL OF THE OTHER COMMANDS
+  // private RunCommand motorTest = new RunCommand(
+  //  () -> testingObject.test(controller.getLeftY()), testingObject);
+  
+  //  private RunCommand countIncrement = new RunCommand(
+  //     () -> {if (controller.getTriangleButtonPressed()) {
+  //       testingObject.incrementCount();;
+  //     }
+  //   }, testingObject);
+
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -93,6 +106,8 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(drive);
     indexer.setDefaultCommand(index);
     climber.setDefaultCommand(climb);
+    //testingObject.setDefaultCommand(motorTest);
+
 	}
 
   public Command getAutonomousCommand() {

@@ -24,15 +24,15 @@ public final class Constants {
 
 
 //DIO
-    public static int c_portBottomLimit = 0;
-    public static int c_portTopLimit = 1;
-    public static int c_portBeamBreakerI = 2;
-    public static int c_portBeamBrealerO = 3;
-    public static int c_portIndexerMid = 4;
-    public static int c_portLShootEncoderI = 5;
-    public static int c_portLShootEncoderO = 6;
-    public static int c_portRShootEncoderI = 7;
-    public static int c_portRShootEncoderO = 8;
+    public static int c_portBottomLimit = 10;
+    public static int c_portTopLimit = 11;
+    public static int c_portBeamBreakerI = 12;
+    public static int c_portBeamBrealerO = 13;
+    public static int c_portIndexerMid = 14;
+    public static int c_portLShootEncoderI = 15;
+    public static int c_portLShootEncoderO = 16;
+    public static int c_portRShootEncoderI = 17;
+    public static int c_portRShootEncoderO = 18;
 
 //CAN
     public static int c_portPidgeon = 0;
