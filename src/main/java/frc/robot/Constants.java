@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -11,46 +12,4 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {
-    public static int c_controllerChannel = 1;
-    
-//PWM
-    public static int c_portIntakeSuckerUpper = 0;
-    public static int c_portIntakeMover = 1;
-    public static int c_portIndexerUp = 2;
-    public static int c_portLShootMotor = 3;
-    public static int c_portRShootMotor = 4;
-
-
-
-//DIO
-    public static int c_portBottomLimit = 10;
-    public static int c_portTopLimit = 11;
-    public static int c_portBeamBreakerI = 12;
-    public static int c_portBeamBrealerO = 13;
-    public static int c_portIndexerMid = 14;
-    public static int c_portLShootEncoderI = 15;
-    public static int c_portLShootEncoderO = 16;
-    public static int c_portRShootEncoderI = 17;
-    public static int c_portRShootEncoderO = 18;
-
-//CAN
-    public static int c_portPidgeon = 0;
-    public static int c_pnuematicsControlModule = 1;
-    public static int c_portRightFrontMotor = 2; 
-    public static int c_portRightBackMotor = 3;
-    public static int c_portLeftFrontMotor = 4;
-    public static int c_portLeftBackMotor = 5;
-    public static int c_portClimberWinch = 6;
-    public static int c_portClimberHook = 7;
-
-// PCM
-    public static int c_portGearShiftI = 0;
-    public static int c_portGearShiftO = 1;
-    public static int c_portLeftLockI = 4;
-    public static int c_portLeftLockO = 5;
-    public static int c_portRightLockI = 6;
-    public static int c_portRightLockO = 7;
-
-
-}
+public final class Constants {}

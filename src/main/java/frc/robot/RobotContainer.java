@@ -5,19 +5,24 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.Limelight;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.PS4Controller;
-import edu.wpi.first.wpilibj.DigitalInput;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.MotorTest;
+import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Drivetrain;
+
+
+
+// Importing subsystems  
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+// Imports the contants file
+import frc.robot.Constants;
+
+// Imports the encoder
+import com.revrobotics.RelativeEncoder;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,64 +32,45 @@ import frc.robot.subsystems.MotorTest;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final PS4Controller m_controller = new PS4Controller(0);
+
+  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final Drivetrain drivetrain = new Drivetrain();
-  private final Shooter shooter = new Shooter();
-  private final Intake intake = new Intake();
-  private final Indexer indexer = new Indexer();
-  private final Climber climber = new Climber();
-  private final Limelight limelighter = new Limelight();
-  private final PS4Controller controller = new PS4Controller(0);
-  private final DigitalInput inputSensor = new DigitalInput(Constants.c_portBeamBreakerI);
-  private final MotorTest testingObject = new MotorTest();
+
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+   
     // Configure the button bindings
     configureButtonBindings();
+    configureDefaultCommands();
+    // This is the constructor
+    
   }
-  private RunCommand drive = new RunCommand(
-    () -> drivetrain.arcadeDrive(controller.getLeftY(), controller.getRightX()), drivetrain);
-  private RunCommand shootrun = new RunCommand(
-    () -> {if (controller.getCrossButtonPressed()) {
-      shooter.shoot(0.7);
-    } else {
-      shooter.shoot(0);
-    }
-  }, shooter);
-  private RunCommand intaker = new RunCommand(
-    () -> {if (controller.getTriangleButtonPressed()) {
-      intake.runIntake();
-    }
-  }, intake);
-  private RunCommand index = new RunCommand(
-    () -> {if (inputSensor.get()) {
-      indexer.useIndexer();
-    }
-  }, indexer);
-  private RunCommand climb = new RunCommand(
-    () -> {if (controller.getSquareButton()) {
-      climber.winch(-1);
-    }
-    if (controller.getCircleButton()) {
-      climber.lock();
-    }
-    if (controller.getR2Button() || controller.getL2Button()) {
-      climber.climberMove(1, controller.getR2Button(),controller.getL2Button());
-    }
-  }, climber);
-//winch is square
-//circle is lock
-//dpad up and down
-
-
-//TESTING MOTORS - UNCOMMENT THIS, THEN COMMENT OUT ALL OF THE OTHER COMMANDS
-  // private RunCommand motorTest = new RunCommand(
-  //  () -> testingObject.test(controller.getLeftY()), testingObject);
   
-  //  private RunCommand countIncrement = new RunCommand(
-  //     () -> {if (controller.getTriangleButtonPressed()) {
-  //       testingObject.incrementCount();;
-  //     }
-  //   }, testingObject);
+  private RunCommand bhfsi = new RunCommand(
+    () -> {
+      if (m_controller.getR2Button()){
+        m_exampleSubsystem.shoot(0.5);
+        m_exampleSubsystem.index(0.8);
+    }
+      else if (m_controller.getTriangleButton()){
+        m_exampleSubsystem.intake(0.4);
+        m_exampleSubsystem.lifter(0.4);
+        m_exampleSubsystem.index(0.4);
+    } else {
+      m_exampleSubsystem.intake(0);
+      m_exampleSubsystem.lifter(-0.9);
+      m_exampleSubsystem.index(0);
+      m_exampleSubsystem.shoot(0);
+    }
+    
+  }, m_exampleSubsystem);
+
+  private RunCommand drive = new RunCommand(
+    () -> drivetrain.arcadeDrive(m_controller.getLeftY()/1.1, m_controller.getRightX()/1.8), drivetrain);
+
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -94,27 +80,19 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {}
 
+  private void configureDefaultCommands(){
+    m_exampleSubsystem.setDefaultCommand(bhfsi);
+    drivetrain.setDefaultCommand(drive);
+  }
+
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-
-  private void configureDefaultCommands() {
-		shooter.setDefaultCommand(shootrun);
-    intake.setDefaultCommand(intaker);
-    drivetrain.setDefaultCommand(drive);
-    indexer.setDefaultCommand(index);
-    climber.setDefaultCommand(climb);
-    //testingObject.setDefaultCommand(motorTest);
-
-	}
-
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    final RunCommand m_autoCommand = new RunCommand(
-    () -> drivetrain.autoArcadeDrive(), drivetrain);
-
     return m_autoCommand;
   }
 }

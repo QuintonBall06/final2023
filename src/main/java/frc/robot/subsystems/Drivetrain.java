@@ -24,33 +24,33 @@ import com.revrobotics.RelativeEncoder;
 
 // The drivetrain class contains the methods that control the seperate parts of the drivetrain
 public class Drivetrain extends SubsystemBase {
-  private final CANSparkMax m_rightFrontMotor = new CANSparkMax(Constants.c_portRightFrontMotor,MotorType.kBrushless);
-  private final CANSparkMax m_rightBackMotor = new CANSparkMax(Constants.c_portRightBackMotor,MotorType.kBrushless);
-  private final CANSparkMax m_leftFrontMotor = new CANSparkMax(Constants.c_portLeftFrontMotor,MotorType.kBrushless);
-  private final CANSparkMax m_leftBackMotor = new CANSparkMax(Constants.c_portLeftBackMotor,MotorType.kBrushless);
+  private final CANSparkMax m_rightFrontMotor = new CANSparkMax(5,MotorType.kBrushless);
+  private final CANSparkMax m_rightBackMotor = new CANSparkMax(3,MotorType.kBrushless);
+  private final CANSparkMax m_leftFrontMotor = new CANSparkMax(4,MotorType.kBrushless);
+  private final CANSparkMax m_leftBackMotor = new CANSparkMax(2,MotorType.kBrushless);
 
   
-  private final MotorControllerGroup m_rightControler = new MotorControllerGroup(m_rightFrontMotor,m_rightBackMotor);
-  private final MotorControllerGroup m_leftControler = new MotorControllerGroup(m_leftFrontMotor,m_leftBackMotor);
-  private final DifferentialDrive m_drivetrain = new DifferentialDrive(m_leftControler,m_rightControler);
-  
-  private RelativeEncoder encoder = m_leftBackMotor.getEncoder();
+  private final MotorControllerGroup m_rightControler = new MotorControllerGroup(m_rightFrontMotor, m_rightBackMotor);
+  private final MotorControllerGroup m_leftControler = new MotorControllerGroup(m_leftFrontMotor, m_leftBackMotor);
+  private final DifferentialDrive m_drivetrain = new DifferentialDrive(m_leftControler, m_rightControler);
 
   // This is the constructor
   /** Creates a new ExampleSubsystem. */
   public Drivetrain() {
-    
+    m_leftFrontMotor.setInverted(true);
+    m_leftBackMotor.setInverted(true);
   }
   // This method declares the axes of the drive train
   public void arcadeDrive(double leftYAxis, double rightXAxis) {
-    m_drivetrain.arcadeDrive(leftYAxis, rightXAxis);
+    m_drivetrain.arcadeDrive(-leftYAxis, rightXAxis);
   }
+
   // This method is the autonomous code for the robot
   public void autoArcadeDrive() {
-    while(encoder.getPosition() < 6) {
-      arcadeDrive(-1, 0);
-    }
-    arcadeDrive(0, 0);
+    // while(encoder.getPosition() < 6) {
+    //   arcadeDrive(-1, 0);
+    // }
+    // arcadeDrive(0, 0);
   }
           //run until getPosition returns 6
 
