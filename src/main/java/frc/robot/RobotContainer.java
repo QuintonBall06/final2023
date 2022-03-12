@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.BallMoving;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
-
+import frc.robot.subsystems.Limelight;
 
 
 // Importing subsystems  
@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // Imports the contants file
 import frc.robot.Constants;
+
+import java.util.ResourceBundle.Control;
 
 // Imports the encoder
 import com.revrobotics.RelativeEncoder;
@@ -32,11 +34,13 @@ import com.revrobotics.RelativeEncoder;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final BallMoving m_ballMover = new BallMoving();
   private final PS4Controller m_controller = new PS4Controller(0);
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final ExampleCommand m_autoCommand = new ExampleCommand(m_ballMover);
   private final Drivetrain drivetrain = new Drivetrain();
+
+  private final Limelight m_limelight = new Limelight(drivetrain);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -48,28 +52,47 @@ public class RobotContainer {
     // This is the constructor
     
   }
-  
-  private RunCommand bhfsi = new RunCommand(
+
+  private RunCommand ballIsLife = new RunCommand(
     () -> {
       if (m_controller.getR2Button()){
-        m_exampleSubsystem.shoot(0.5);
-        m_exampleSubsystem.index(0.8);
-    }
-      else if (m_controller.getTriangleButton()){
-        m_exampleSubsystem.intake(0.4);
-        m_exampleSubsystem.lifter(0.4);
-        m_exampleSubsystem.index(0.4);
+        m_ballMover.shoot(0.5);
+        m_ballMover.index(0.8);
+    } else if (m_controller.getTriangleButton()){
+        m_ballMover.intake(0.6);
+        m_ballMover.lifter(0.9);
+        m_ballMover.index(0.4);
+    } else if (m_controller.getCrossButton()) {
+      m_ballMover.intake(-0.4);
+      m_ballMover.lifter(0.4);
+      m_ballMover.index(-0.4);
+    } else if (m_controller.getSquareButton()) {
+      m_ballMover.intake(0);
+      m_ballMover.lifter(-0.8);
+      m_ballMover.index(0);
+    } else if (m_controller.getL2Button()) {
+      m_ballMover.intake(0);
+      m_ballMover.lifter(0);
+      m_ballMover.index(0.4);
+      m_ballMover.limeShoot();
     } else {
-      m_exampleSubsystem.intake(0);
-      m_exampleSubsystem.lifter(-0.9);
-      m_exampleSubsystem.index(0);
-      m_exampleSubsystem.shoot(0);
+      m_ballMover.intake(0);
+      m_ballMover.lifter(-1);
+      m_ballMover.index(0);
+      m_ballMover.shoot(0);
     }
     
-  }, m_exampleSubsystem);
+  }, m_ballMover);
 
   private RunCommand drive = new RunCommand(
-    () -> drivetrain.arcadeDrive(m_controller.getLeftY()/1.1, m_controller.getRightX()/1.8), drivetrain);
+    () -> {
+      if (m_controller.getL2Button()){
+        m_limelight.limeDrive();
+      } else {
+        drivetrain.arcadeDrive(m_controller.getLeftY()/1.1, m_controller.getRightX()/1.8);
+      }
+      
+    }, drivetrain);
 
 
   /**
@@ -81,8 +104,9 @@ public class RobotContainer {
   private void configureButtonBindings() {}
 
   private void configureDefaultCommands(){
-    m_exampleSubsystem.setDefaultCommand(bhfsi);
+    m_ballMover.setDefaultCommand(ballIsLife);
     drivetrain.setDefaultCommand(drive);
+
   }
 
   
