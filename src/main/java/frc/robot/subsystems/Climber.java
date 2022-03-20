@@ -27,41 +27,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 
-public class Limelight extends SubsystemBase {
+public class Climber extends SubsystemBase {
+  private final CANSparkMax m_winch = new CANSparkMax(6,MotorType.kBrushless); //ppretneding like NEO for now, just change to brushed for sim
 
-  private Drivetrain m_drivetrain;
-  private double xVal = 0;
-  
-	private final NetworkTable m_limelight;
-    private NetworkTableEntry m_pipeline;
-	public double m_rightCommand;
-	public double m_leftCommand;
+  public Climber () {
 
-  // This is the constructor
-  /** Creates a new ExampleSubsystem. */
-  public Limelight (Drivetrain _drivetrain) {
-        m_drivetrain = _drivetrain;
-        m_limelight = NetworkTableInstance.getDefault().getTable("limelight");
-        m_pipeline = m_limelight.getEntry("pipeline");
-        m_pipeline.setNumber(2);
   }
   // This method declares the axes of the drive train
-  public void limeDrive() {
-    
-    double tx = m_limelight.getEntry("tx").getDouble(0);
-		SmartDashboard.putNumber("tx", tx);
+  public void climbUp() {
+    m_winch.set(1);
+  }
 
-    double xVal;
+  public void climbDown() {
+    m_winch.set(-1);
+  }
 
-    if (tx < 1 && tx > -1){
-      xVal = tx/-30;
-    } else {
-		  xVal = tx/-19;
-    }
-
-		SmartDashboard.putNumber("Xvsl", m_leftCommand);
-
-    m_drivetrain.arcadeDrive(0, xVal);
+  public void stopClimb() {
+    m_winch.set(0);
   }
 
   @Override
