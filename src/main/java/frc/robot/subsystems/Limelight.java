@@ -64,6 +64,19 @@ public class Limelight extends SubsystemBase {
     m_drivetrain.arcadeDrive(0, xVal);
   }
 
+  public void changeLight() {
+    NetworkTableEntry ledMode = m_limelight.getEntry("ledMode");
+			if (ledMode.getDouble(0) == 0) {
+				ledMode.setDouble(1); // Force OFF
+			} else if (ledMode.getDouble(0) == 1) {
+				ledMode.setDouble(3); // Force ON
+			} else if (ledMode.getDouble(0) == 3) {
+				ledMode.setDouble(1); // Force OFF
+			} else {
+				ledMode.setDouble(1); // Force OFF by default
+			}
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

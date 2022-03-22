@@ -47,6 +47,13 @@ public double m_leftCommand;
     }
   }
 
+  public void stopAll() {
+    shoot(0);
+    index(0);
+    intake(0);
+    lifter(-1);
+  }
+
   public void shoot(double speed){
       shootl.set(-speed);
       shootr.set(speed);

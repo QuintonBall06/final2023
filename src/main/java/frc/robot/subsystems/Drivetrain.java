@@ -34,8 +34,8 @@ public class Drivetrain extends SubsystemBase {
   private final CANSparkMax m_rightBackMotor = new CANSparkMax(3,MotorType.kBrushless);
   private final CANSparkMax m_leftFrontMotor = new CANSparkMax(4,MotorType.kBrushless);
   private final CANSparkMax m_leftBackMotor = new CANSparkMax(2,MotorType.kBrushless);
-  private final RelativeEncoder m_leftEncoder = m_leftFrontMotor.getAlternateEncoder(8192);
-  private final RelativeEncoder m_rightEncoder = m_rightFrontMotor.getAlternateEncoder(8192);
+  private final RelativeEncoder m_leftEncoder = m_leftFrontMotor.getEncoder();
+  private final RelativeEncoder m_rightEncoder = m_rightFrontMotor.getEncoder();
   
   private final MotorControllerGroup m_rightControler = new MotorControllerGroup(m_rightFrontMotor, m_rightBackMotor);
   private final MotorControllerGroup m_leftControler = new MotorControllerGroup(m_leftFrontMotor, m_leftBackMotor);
@@ -88,7 +88,7 @@ public class Drivetrain extends SubsystemBase {
     while ((Math.abs((getLeftDistance()+getRightDistance())/2)) < _dist) {
       SmartDashboard.putNumber("Left Distance", getLeftDistance());
       SmartDashboard.putNumber("Right Distance", getRightDistance());
-      m_drivetrain.tankDrive(_speed, _speed);
+      m_drivetrain.tankDrive(_speed*1.025, _speed);
     }
 
     m_drivetrain.tankDrive(0, 0);
