@@ -80,7 +80,7 @@ public class Drivetrain extends SubsystemBase {
     setLeftZero();
     setRightZero();
     
-    Timer.delay(0.4);
+    // Timer.delay(0.4);
 
     SmartDashboard.putNumber("Left Distance", getLeftDistance());
     SmartDashboard.putNumber("Right Distance", getRightDistance());
@@ -88,7 +88,7 @@ public class Drivetrain extends SubsystemBase {
     while ((Math.abs((getLeftDistance()+getRightDistance())/2)) < _dist) {
       SmartDashboard.putNumber("Left Distance", getLeftDistance());
       SmartDashboard.putNumber("Right Distance", getRightDistance());
-      m_drivetrain.tankDrive(_speed*1.025, _speed);
+      m_drivetrain.tankDrive(_speed*1.035, _speed);
     }
 
     m_drivetrain.tankDrive(0, 0);
@@ -112,7 +112,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
 
-    Timer.delay(0.4);
+    // Timer.delay(0.4);
 
     SmartDashboard.putNumber("Left Distance", getLeftDistance());
     SmartDashboard.putNumber("Right Distance", getRightDistance());

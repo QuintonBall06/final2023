@@ -86,15 +86,18 @@ public class RobotContainer {
         m_ballMover.index(0.4);
         intakeOn = true;
       }
-    } else if (m_controller.getCrossButton()) {
+    } 
+    if (m_controller.getCrossButton()) {
       m_ballMover.intake(-0.4);
       m_ballMover.index(-0.8);
       m_ballMover.lifter(-1);
-    } else if (m_controller.getCrossButtonReleased()) {
+    } 
+    if (m_controller.getCrossButtonReleased()) {
       m_ballMover.intake(0);
       m_ballMover.index(0);
       m_ballMover.lifter(0);
-    } else if (m_controller.getSquareButtonPressed()) {
+    } 
+    if (m_controller.getSquareButtonPressed()) {
       if (armUp){
         m_ballMover.lifter(0.9);
         armUp = false;
@@ -102,12 +105,14 @@ public class RobotContainer {
         m_ballMover.lifter(-1);
         armUp = true;
       }
-    } //else if (toplimitSwitch.get()) {
-    //   m_ballMover.lifter(0);
-    //   System.out.println("lifter stopped");
-    // } else {
-    //   System.out.println("lknhjweoihdr");
-    // }
+    } 
+    if (m_controller.getTriangleButtonReleased() || m_controller.getSquareButtonReleased())
+      if (toplimitSwitch.get()) {
+          m_ballMover.lifter(0);
+          System.out.println("lifter stopped");
+      } else {
+        System.out.println("lknhjweoihdr");
+      }
   }, m_ballMover);
 
   private RunCommand climb = new RunCommand(
