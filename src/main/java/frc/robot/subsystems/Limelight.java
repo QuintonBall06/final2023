@@ -45,13 +45,19 @@ public class Limelight extends SubsystemBase {
         m_pipeline = m_limelight.getEntry("pipeline");
         m_pipeline.setNumber(2);
   }
-  // This method declares the axes of the drive train
+  
+  // This method declares limelight help
+  // change black level offset and exposer and sort and primarily H value 
+  // TSRGET ASPECT RATIOs and direction, reject sparkel. smart target
   public void limeDrive() {
     
     double tx = m_limelight.getEntry("tx").getDouble(0);
-		SmartDashboard.putNumber("tx", tx);
+    double ty = m_limelight.getEntry("ty").getDouble(0);
+    SmartDashboard.putNumber("tx", tx);
+    SmartDashboard.putNumber("ty", ty);
+    
 
-    double xVal;
+    double xVal, yVal;
 
     if (tx < 1 && tx > -1){
       xVal = tx/-30;
@@ -59,9 +65,16 @@ public class Limelight extends SubsystemBase {
 		  xVal = tx/-19;
     }
 
-		SmartDashboard.putNumber("Xvsl", m_leftCommand);
+    if (ty < 1 && ty > -1){
+      yVal = 0;
+    } else {
+		  yVal = ty/-23;
+    }
 
-    m_drivetrain.arcadeDrive(0, xVal);
+    SmartDashboard.putNumber("Xval", xVal);
+    SmartDashboard.putNumber("Yval", yVal);
+
+    m_drivetrain.arcadeDrive(yVal, xVal);
   }
 
   public void changeLight() {

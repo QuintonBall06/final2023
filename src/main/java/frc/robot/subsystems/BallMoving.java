@@ -12,6 +12,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 
+
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.CounterBase;
+
 public class BallMoving extends SubsystemBase {
   private Spark intakeBall = new Spark(0);
   private Spark intakeLifter = new Spark(1);
@@ -22,6 +26,9 @@ public class BallMoving extends SubsystemBase {
   private NetworkTableEntry m_pipeline;
 public double m_rightCommand;
 public double m_leftCommand;
+
+private final Encoder m_ShootEncoder = new Encoder(0, 1, true, CounterBase.EncodingType.k4X);
+private double newSpeed = 0.6;
 
 // This method declares the axes of the drive train
 
@@ -34,16 +41,12 @@ public double m_leftCommand;
   }
 
   public void limeShoot(){
-    
     double ty = m_limelight.getEntry("ty").getDouble(0);
-
-    if (ty < 0 ){
-      shootl.set(-0.7);
-      shootr.set(0.7);
+    double yNot = ty*0.01;
+    if (ty>3) {
+      shoot(yNot+0.7);
     } else {
-      
-      shootl.set(-0.9);
-      shootr.set(0.9);
+      shoot(0.7);
     }
   }
 
@@ -54,9 +57,16 @@ public double m_leftCommand;
     lifter(-1);
   }
 
-  public void shoot(double speed){
+  public void shoot(double speed) {
+    //speed > 0.6 shoot high with velocity
+    if (Math.abs(m_ShootEncoder.getRate()) < 70 && speed >= 0.6) {
+      shootl.set(-newSpeed);
+      shootr.set(newSpeed);
+      newSpeed += 0.03;
+    } else {
       shootl.set(-speed);
       shootr.set(speed);
+    }
   }
 
   public void index(double speed) {

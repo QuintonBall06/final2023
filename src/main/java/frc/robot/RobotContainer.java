@@ -68,7 +68,7 @@ public class RobotContainer {
   private RunCommand ballIsLife = new RunCommand(
     () -> {
     if (m_controller.getR1Button()){
-        m_ballMover.shoot(0.7);
+        m_ballMover.limeShoot();
         m_ballMover.index(0.8);
     } 
     if (m_controller.getR2Button()){
@@ -157,14 +157,15 @@ public class RobotContainer {
       } else if (m_controller.getPOV(0) == 270) {
       drivetrain.arcadeDrive(0, -0.2);
       } else {
+          double maxSpeed = 0.9;
           if (m_controller.getLeftY() < 0 && m_controller.getRightX() < 0){
-            drivetrain.arcadeDrive(Math.sqrt(Math.abs(m_controller.getLeftY()) * -0.9), Math.sqrt(Math.abs(m_controller.getRightX()))* -0.9);
+            drivetrain.arcadeDrive(m_controller.getLeftY() * maxSpeed, m_controller.getRightX()* maxSpeed);
           } else if (m_controller.getLeftY() < 0){
-            drivetrain.arcadeDrive(Math.sqrt(Math.abs(m_controller.getLeftY())) * -0.9, Math.sqrt(m_controller.getRightX()) * 0.9);
+            drivetrain.arcadeDrive(m_controller.getLeftY() * maxSpeed, m_controller.getRightX() * maxSpeed);
           } else if (m_controller.getRightX() < 0){
-            drivetrain.arcadeDrive(Math.sqrt(m_controller.getLeftY()) * 0.9, Math.sqrt(Math.abs(m_controller.getRightX())) * -0.9);
+            drivetrain.arcadeDrive(m_controller.getLeftY() * maxSpeed, m_controller.getRightX() * maxSpeed);
           } else {
-            drivetrain.arcadeDrive(Math.sqrt(m_controller.getLeftY()) * 0.9, Math.sqrt(m_controller.getRightX()) * 0.9);
+            drivetrain.arcadeDrive(m_controller.getLeftY() * maxSpeed, m_controller.getRightX() * maxSpeed);
           }
       }
       if (m_controller.getTouchpadPressed()) {

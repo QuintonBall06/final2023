@@ -48,6 +48,7 @@ public class Drivetrain extends SubsystemBase {
   
   private Solenoid s1,s2; 
   private final Compressor m_compressor;
+  private double kP = 0.3;
 
   // This is the constructor
   /** Creates a new ExampleSubsystem. */
@@ -62,13 +63,31 @@ public class Drivetrain extends SubsystemBase {
     m_leftEncoder.setPosition(0);
 		m_rightEncoder.setPosition(0);
   }
+
+
   // This method declares the axes of the drive train
   public void arcadeDrive(double leftYAxis, double rightXAxis) {
-    m_drivetrain.arcadeDrive(-leftYAxis, rightXAxis);
+    double speed;
+    if (leftYAxis < 0.1 && leftYAxis > 0.1) {
+      kP = 0.3;
+      m_drivetrain.arcadeDrive(0, 0);
+    } else {
+      speed = kP*leftYAxis;
+      if (Math.abs(speed) < leftYAxis) {
+
+      if (leftYAxis<0) {
+        m_drivetrain.arcadeDrive(-speed, rightXAxis);
+      } else {
+        m_drivetrain.arcadeDrive(speed, rightXAxis);
+      }
+
+      kP += (1-(leftYAxis-speed))*0.05;
+      } else {
+        m_drivetrain.arcadeDrive(speed, rightXAxis);
+      }
+    }
   }
-  public void tankDrive(double leftSpeed, double rightSpeed) {
-    m_drivetrain.arcadeDrive(-leftSpeed, -rightSpeed);
-  }
+
 
   public void gearShift() {
     if (s1.get()) {
@@ -89,11 +108,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getLeftDistance() {
-    return m_leftEncoder.getPosition();
+    return m_leftEncoder.getPosition()*Constants.c_encoderRatio;
   }
 
   public double getRightDistance() {
-    return m_rightEncoder.getPosition();
+    return m_rightEncoder.getPosition()*Constants.c_encoderRatio;
   }
 
 

@@ -13,6 +13,8 @@ package frc.robot;
  */
 public final class Constants {
     public static int c_controllerChannel = 1;
+
+    public static int c_encoderRatio = 4;
     
 //PWM
     public static int c_portIntakeSuckerUpper = 0;
