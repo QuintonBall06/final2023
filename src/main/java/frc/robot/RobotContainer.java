@@ -48,8 +48,10 @@ public class RobotContainer {
 
   private final Climber m_climber = new Climber();
   // private final AutoCommands m_autoCommand = new AutoCommands(drivetrain, m_ballMover, m_limelight);
-  DigitalInput toplimitSwitch = new DigitalInput(9);
-  DigitalInput bottomlimitSwitch = new DigitalInput(8);
+
+
+  DigitalInput climberLimitSwitch = new DigitalInput(9); //NEED VALUE
+  boolean climbPrevUp = false;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -65,31 +67,40 @@ public class RobotContainer {
 
   private RunCommand ballIsLife = new RunCommand(
     () -> {
-    if (m_controller.getR2Button()){
+    if (m_controller.getR1Button()){
         m_ballMover.shoot(0.7);
         m_ballMover.index(0.8);
+    } 
+    if (m_controller.getR2Button()){
+      m_ballMover.shoot(0.5);
+      m_ballMover.index(0.8);
     } 
     if (m_controller.getR2ButtonReleased()){
       m_ballMover.shoot(0);
       m_ballMover.index(0);
+    }     
+    if (m_controller.getR1ButtonReleased()){
+      m_ballMover.shoot(0);
+      m_ballMover.index(0);
     } 
+
 
     if (m_controller.getTriangleButtonPressed()){
       if (intakeOn) {
         m_ballMover.intake(0);
-        // m_ballMover.lifter(-1);
+        m_ballMover.lifter(-1);
         m_ballMover.index(0);
         intakeOn = false;
       } else {
         m_ballMover.intake(0.6);
-        // m_ballMover.lifter(0.9);
+        m_ballMover.lifter(0.9);
         m_ballMover.index(0.4);
         intakeOn = true;
       }
     } 
     if (m_controller.getCrossButton()) {
       m_ballMover.intake(-0.4);
-      m_ballMover.index(-0.8);
+      m_ballMover.index(-0.5);
       m_ballMover.lifter(-1);
     } 
     if (m_controller.getCrossButtonReleased()) {
@@ -99,35 +110,46 @@ public class RobotContainer {
     } 
     if (m_controller.getSquareButtonPressed()) {
       if (armUp){
-        m_ballMover.lifter(0.9);
+        m_ballMover.lifter(0.5);
         armUp = false;
       } else {
         m_ballMover.lifter(-1);
         armUp = true;
       }
     } 
-    if (m_controller.getTriangleButtonReleased() || m_controller.getSquareButtonReleased())
-      if (toplimitSwitch.get()) {
-          m_ballMover.lifter(0);
-          System.out.println("lifter stopped");
-      } else {
-        System.out.println("lknhjweoihdr");
-      }
+    if (m_controller.getTriangleButtonReleased())
+        m_ballMover.lifter(0);
+        
+    if (m_controller.getSquareButtonReleased())
+       m_ballMover.lifter(0);
   }, m_ballMover);
 
   private RunCommand climb = new RunCommand(
     () -> {
   if (m_controller.getPOV(0) == 0) {
-    m_climber.climbUp();
+    if (climberLimitSwitch.get() && climbPrevUp){
+      m_climber.stopClimb();
+    } else {
+      m_climber.climbUp();
+      climbPrevUp = true;
+    }
   } else if (m_controller.getPOV(0) == 180) {
-    m_climber.climbDown();
+    if (climberLimitSwitch.get() && !climbPrevUp){
+      m_climber.stopClimb();
+    } else {
+      m_climber.climbDown();
+      climbPrevUp = false;
+    }
   } else {
     m_climber.stopClimb();
   }
-}, m_climber);
+  }, m_climber);
 
   private RunCommand drive = new RunCommand(
     () -> {
+      if (m_controller.getOptionsButtonPressed()){
+        drivetrain.gearShift();
+      }
       if (m_controller.getL2Button()){
         m_limelight.limeDrive();
       } else if (m_controller.getPOV(0) == 90) {
@@ -136,13 +158,13 @@ public class RobotContainer {
       drivetrain.arcadeDrive(0, -0.2);
       } else {
           if (m_controller.getLeftY() < 0 && m_controller.getRightX() < 0){
-            drivetrain.arcadeDrive(Math.sqrt(Math.abs(m_controller.getLeftY()) * -0.8), Math.sqrt(Math.abs(m_controller.getRightX()))* -0.8);
+            drivetrain.arcadeDrive(Math.sqrt(Math.abs(m_controller.getLeftY()) * -0.9), Math.sqrt(Math.abs(m_controller.getRightX()))* -0.9);
           } else if (m_controller.getLeftY() < 0){
-            drivetrain.arcadeDrive(Math.sqrt(Math.abs(m_controller.getLeftY())) * -0.8, Math.sqrt(m_controller.getRightX()) * 0.8);
+            drivetrain.arcadeDrive(Math.sqrt(Math.abs(m_controller.getLeftY())) * -0.9, Math.sqrt(m_controller.getRightX()) * 0.9);
           } else if (m_controller.getRightX() < 0){
-            drivetrain.arcadeDrive(Math.sqrt(m_controller.getLeftY()) * 0.8, Math.sqrt(Math.abs(m_controller.getRightX())) * -0.8);
+            drivetrain.arcadeDrive(Math.sqrt(m_controller.getLeftY()) * 0.9, Math.sqrt(Math.abs(m_controller.getRightX())) * -0.9);
           } else {
-            drivetrain.arcadeDrive(Math.sqrt(m_controller.getLeftY()) * 0.8, Math.sqrt(m_controller.getRightX()) * 0.8);
+            drivetrain.arcadeDrive(Math.sqrt(m_controller.getLeftY()) * 0.9, Math.sqrt(m_controller.getRightX()) * 0.9);
           }
       }
       if (m_controller.getTouchpadPressed()) {
@@ -214,7 +236,7 @@ public class RobotContainer {
           m_ballMover.shoot(0.64);
           m_ballMover.index(0.8);
           m_ballMover.intake(0.6);
-          m_ballMover.lifter(1);
+          m_ballMover.lifter(0.5);
         }, m_ballMover), new RunCommand(() -> {
           drivetrain.driveToDistance(30, 0.5);
           System.out.println("Got second ball");
@@ -263,7 +285,7 @@ public class RobotContainer {
         new ParallelCommandGroup(new RunCommand(() -> {
           m_ballMover.index(0.35);
           m_ballMover.intake(0.6);
-          m_ballMover.lifter(1);
+          m_ballMover.lifter(0.5);
           System.out.println("Got 3rd ball");
         }, m_ballMover), new RunCommand(() -> {
           drivetrain.driveToDistance(30, 0.5);
@@ -319,7 +341,7 @@ public class RobotContainer {
         new ParallelCommandGroup(new RunCommand(() -> {
           m_ballMover.index(0.8);
           m_ballMover.intake(0.6);
-          m_ballMover.lifter(1);
+          m_ballMover.lifter(0.5);
         }, m_ballMover), new RunCommand(() -> {
           drivetrain.driveToDistance(50, 0.5);
         }, drivetrain)).withTimeout(3),
@@ -350,7 +372,7 @@ public class RobotContainer {
         new ParallelCommandGroup(new RunCommand(() -> {
           m_ballMover.index(0.4);
           m_ballMover.shoot(0.4);
-          m_ballMover.lifter(1);
+          m_ballMover.lifter(0.5);
         }, m_ballMover)).withTimeout(1),
 
         
@@ -412,7 +434,7 @@ public class RobotContainer {
           m_ballMover.shoot(0.64);
           m_ballMover.index(0.8);
           m_ballMover.intake(0.6);
-          m_ballMover.lifter(1);
+          m_ballMover.lifter(0.5);
         }, m_ballMover), new RunCommand(() -> {
           drivetrain.driveToDistance(20, 0.4);
         }, drivetrain)).withTimeout(3),

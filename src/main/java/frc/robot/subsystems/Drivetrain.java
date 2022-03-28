@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 // imports the differential drive for the drivetrain
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -18,12 +19,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Solenoid;
 
 // Importing subsystems  
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // Imports the contants file
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.Compressor;
+
 
 // Imports the encoder
 import com.revrobotics.RelativeEncoder;
@@ -40,10 +44,19 @@ public class Drivetrain extends SubsystemBase {
   private final MotorControllerGroup m_rightControler = new MotorControllerGroup(m_rightFrontMotor, m_rightBackMotor);
   private final MotorControllerGroup m_leftControler = new MotorControllerGroup(m_leftFrontMotor, m_leftBackMotor);
   private final DifferentialDrive m_drivetrain = new DifferentialDrive(m_leftControler, m_rightControler);
+  //defines Axis Camera
+  
+  private Solenoid s1,s2; 
+  private final Compressor m_compressor;
 
   // This is the constructor
   /** Creates a new ExampleSubsystem. */
   public Drivetrain() {
+    m_compressor = new Compressor(PneumaticsModuleType.CTREPCM);  //Digtial I/O,Relay
+
+    s1 = new Solenoid(PneumaticsModuleType.CTREPCM, 0);                        // Solenoid port
+    s2 = new Solenoid(PneumaticsModuleType.CTREPCM, 2);                        // Solenoid port
+
     m_leftFrontMotor.setInverted(true);
     m_leftBackMotor.setInverted(true);
     m_leftEncoder.setPosition(0);
@@ -55,6 +68,16 @@ public class Drivetrain extends SubsystemBase {
   }
   public void tankDrive(double leftSpeed, double rightSpeed) {
     m_drivetrain.arcadeDrive(-leftSpeed, -rightSpeed);
+  }
+
+  public void gearShift() {
+    if (s1.get()) {
+      s1.set(false);
+      s2.set(false);
+    } else {
+      s1.set(true);
+      s2.set(true);
+    }
   }
 
   public void setLeftZero() {

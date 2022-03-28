@@ -28,22 +28,26 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class Climber extends SubsystemBase {
-  // private final CANSparkMax m_winch = new CANSparkMax(6,MotorType.kBrushless); //ppretneding like NEO for now, just change to brushed for sim
-
+  // private final CANSparkMax m_winch = new CANSparkMax(6,MotorType.kBrushed); //ppretneding like NEO for now, just change to brushed for sim
+  private final CANSparkMax m_winchL = new CANSparkMax(6,MotorType.kBrushed);
+  private final CANSparkMax m_winchR = new CANSparkMax(7,MotorType.kBrushed);
   public Climber () {
 
   }
   // This method declares the axes of the drive train
   public void climbUp() {
-    // m_winch.set(1);
+    m_winchL.set(1);
+    m_winchR.set(-1);
   }
 
   public void climbDown() {
-    // m_winch.set(-1);
+    m_winchL.set(-1);
+    m_winchR.set(1);
   }
 
   public void stopClimb() {
-    // m_winch.set(0);
+    m_winchL.set(0);
+    m_winchR.set(0);
   }
 
   @Override
