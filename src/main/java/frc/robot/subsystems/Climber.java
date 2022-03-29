@@ -36,13 +36,13 @@ public class Climber extends SubsystemBase {
   }
   // This method declares the axes of the drive train
   public void climbUp() {
-    m_winchL.set(1);
-    m_winchR.set(-1);
+    m_winchL.set(-1);
+    m_winchR.set(1);
   }
 
   public void climbDown() {
-    m_winchL.set(-1);
-    m_winchR.set(1);
+    m_winchL.set(1);
+    m_winchR.set(-1);
   }
 
   public void stopClimb() {
