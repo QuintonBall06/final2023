@@ -68,22 +68,21 @@ public class Drivetrain extends SubsystemBase {
   // This method declares the axes of the drive train
   public void arcadeDrive(double leftYAxis, double rightXAxis) {
     double speed;
-    if (leftYAxis < 0.1 && leftYAxis > 0.1) {
-      kP = 0.3;
-      m_drivetrain.arcadeDrive(0, 0);
+    if (leftYAxis < 0.1 && leftYAxis > -0.1) {
+      kP = 0;
+      m_drivetrain.arcadeDrive(leftYAxis, rightXAxis);
     } else {
       speed = kP*leftYAxis;
-      if (Math.abs(speed) < leftYAxis) {
+      if (Math.abs(speed) < Math.abs(leftYAxis)) {
 
-      if (leftYAxis<0) {
-        m_drivetrain.arcadeDrive(-speed, rightXAxis);
+          m_drivetrain.arcadeDrive(-speed, rightXAxis);
+          if (leftYAxis<0) {
+            kP += (leftYAxis+speed)*-0.05;
+          } else {
+            kP += (leftYAxis-speed)*0.04;
+          }
       } else {
-        m_drivetrain.arcadeDrive(speed, rightXAxis);
-      }
-
-      kP += (1-(leftYAxis-speed))*0.05;
-      } else {
-        m_drivetrain.arcadeDrive(speed, rightXAxis);
+          m_drivetrain.arcadeDrive(-speed, rightXAxis);
       }
     }
   }
