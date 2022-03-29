@@ -124,22 +124,33 @@ public class RobotContainer {
        m_ballMover.lifter(0);
   }, m_ballMover);
 
+  // private RunCommand climb = new RunCommand(
+  //   () -> {
+  // if (m_controller.getPOV(0) == 0) {
+  //   if (climberLimitSwitch.get() && climbPrevUp){
+  //     m_climber.stopClimb();
+  //   } else {
+  //     m_climber.climbUp();
+  //     climbPrevUp = true;
+  //   }
+  // } else if (m_controller.getPOV(0) == 180) {
+  //   if (climberLimitSwitch.get() && !climbPrevUp){
+  //     m_climber.stopClimb();
+  //   } else {
+  //     m_climber.climbDown();
+  //     climbPrevUp = false;
+  //   }
+  // } else {
+  //   m_climber.stopClimb();
+  // }
+  // }, m_climber);
+
   private RunCommand climb = new RunCommand(
     () -> {
   if (m_controller.getPOV(0) == 0) {
-    if (climberLimitSwitch.get() && climbPrevUp){
-      m_climber.stopClimb();
-    } else {
       m_climber.climbUp();
-      climbPrevUp = true;
-    }
   } else if (m_controller.getPOV(0) == 180) {
-    if (climberLimitSwitch.get() && !climbPrevUp){
-      m_climber.stopClimb();
-    } else {
       m_climber.climbDown();
-      climbPrevUp = false;
-    }
   } else {
     m_climber.stopClimb();
   }
@@ -157,16 +168,8 @@ public class RobotContainer {
       } else if (m_controller.getPOV(0) == 270) {
       drivetrain.arcadeDrive(0, -0.2);
       } else {
-          double maxSpeed = 0.9;
-          if (m_controller.getLeftY() < 0 && m_controller.getRightX() < 0){
-            drivetrain.arcadeDrive(m_controller.getLeftY() * maxSpeed, m_controller.getRightX()* maxSpeed);
-          } else if (m_controller.getLeftY() < 0){
-            drivetrain.arcadeDrive(m_controller.getLeftY() * maxSpeed, m_controller.getRightX() * maxSpeed);
-          } else if (m_controller.getRightX() < 0){
-            drivetrain.arcadeDrive(m_controller.getLeftY() * maxSpeed, m_controller.getRightX() * maxSpeed);
-          } else {
-            drivetrain.arcadeDrive(m_controller.getLeftY() * maxSpeed, m_controller.getRightX() * maxSpeed);
-          }
+          double maxSpeed = 0.8;
+          drivetrain.arcadeDrive(m_controller.getLeftY() * maxSpeed, m_controller.getRightX()* maxSpeed/1.75);
       }
       if (m_controller.getTouchpadPressed()) {
         m_limelight.changeLight();
