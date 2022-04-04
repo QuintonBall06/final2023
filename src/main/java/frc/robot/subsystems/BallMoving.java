@@ -28,7 +28,9 @@ public double m_rightCommand;
 public double m_leftCommand;
 
 private final Encoder m_ShootEncoder = new Encoder(0, 1, true, CounterBase.EncodingType.k4X);
-private double newSpeed = 0.6;
+private double newSpeed = 0.7;
+
+double yNot = 53;
 
 // This method declares the axes of the drive train
 
@@ -42,12 +44,8 @@ private double newSpeed = 0.6;
 
   public void limeShoot(){
     double ty = m_limelight.getEntry("ty").getDouble(0);
-    double yNot = ty*0.01;
-    if (ty>3) {
-      shoot(yNot+0.7);
-    } else {
-      shoot(0.7);
-    }
+    yNot = 53+(-ty);
+    SmartDashboard.putNumber("ynot", yNot);
   }
 
   public void stopAll() {
@@ -57,20 +55,65 @@ private double newSpeed = 0.6;
     lifter(-1);
   }
 
+
+
   public void shoot(double speed) {
     //speed > 0.6 shoot high with velocity
-    if (Math.abs(m_ShootEncoder.getRate()) < 70 && speed >= 0.6) {
+    if (speed == 0){
+      shootl.set(0);
+      shootr.set(0);
+      newSpeed = 0.7;
+    } else if (speed >0.6) {
+    
+    if (Math.abs(m_ShootEncoder.getRate()/1000) > (Math.abs(yNot))) {
       shootl.set(-newSpeed);
       shootr.set(newSpeed);
-      newSpeed += 0.03;
+      SmartDashboard.putString("direction", "changing");
+      newSpeed += ((m_ShootEncoder.getRate()/1000)/yNot)/80;
+    } else if (Math.abs(m_ShootEncoder.getRate()/1000) < Math.abs(yNot)-5) {
+      shootl.set(-newSpeed);
+      shootr.set(newSpeed);
+      SmartDashboard.putString("direction", "changing");
+      newSpeed -= ((m_ShootEncoder.getRate()/1000)/yNot)/100;
     } else {
-      shootl.set(-speed);
-      shootr.set(speed);
+      shootl.set(-newSpeed);
+      shootr.set(newSpeed);
+      SmartDashboard.putString("direction", "backup");
     }
   }
+    SmartDashboard.putNumber("speed", m_ShootEncoder.getRate()/1000);
+    SmartDashboard.putNumber("speed error", (m_ShootEncoder.getRate()/1000)/yNot);
+    SmartDashboard.putNumber("Motor value", newSpeed);
+
+  }
+
+  public void shootHigh() {
+      shootl.set(-0.65);
+      shootr.set(0.65);
+  }
+
+  public void shootLow(double speed) {
+    shootl.set(speed*-1);
+    shootr.set(speed);
+}
+
 
   public void index(double speed) {
     index.set(-speed);
+    if (speed == 0) {
+      kP = 0.1;
+    }
+  }
+
+  double kP = 0.1;
+
+  public void indexRamp(double speed) {
+    if (Math.abs(kP) < Math.abs(speed)) {
+      index(kP);
+      kP += (speed*kP)*0.04;
+    } else {
+      index(kP);
+    }
   }
 
   public void lifter(double speed){

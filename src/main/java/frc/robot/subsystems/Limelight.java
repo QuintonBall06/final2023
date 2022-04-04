@@ -60,21 +60,14 @@ public class Limelight extends SubsystemBase {
     double xVal, yVal;
 
     if (tx < 1 && tx > -1){
-      xVal = tx/-30;
+      xVal = tx/22;
     } else {
-		  xVal = tx/-19;
+		  xVal = tx/10;
     }
 
-    if (ty < 1 && ty > -1){
-      yVal = 0;
-    } else {
-		  yVal = ty/-23;
-    }
-
+    m_drivetrain.arcadeDrive(0, xVal);
     SmartDashboard.putNumber("Xval", xVal);
-    SmartDashboard.putNumber("Yval", yVal);
 
-    m_drivetrain.arcadeDrive(yVal, xVal);
   }
 
   public void changeLight() {

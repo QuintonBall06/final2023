@@ -47,16 +47,16 @@ public class Drivetrain extends SubsystemBase {
   //defines Axis Camera
   
   private Solenoid s1,s2; 
-  private final Compressor m_compressor;
+  // private final Compressor m_compressor;
   private double kP = 0.3;
 
   // This is the constructor
   /** Creates a new ExampleSubsystem. */
   public Drivetrain() {
-    m_compressor = new Compressor(PneumaticsModuleType.CTREPCM);  //Digtial I/O,Relay
+    // m_compressor = new Compressor(PneumaticsModuleType.CTREPCM);  //Digtial I/O,Relay
 
-    s1 = new Solenoid(PneumaticsModuleType.CTREPCM, 0);                        // Solenoid port
-    s2 = new Solenoid(PneumaticsModuleType.CTREPCM, 2);                        // Solenoid port
+    // s1 = new Solenoid(PneumaticsModuleType.CTREPCM, 0);                        // Solenoid port
+    // s2 = new Solenoid(PneumaticsModuleType.CTREPCM, 2);                        // Solenoid port
 
     m_leftFrontMotor.setInverted(true);
     m_leftBackMotor.setInverted(true);
@@ -77,9 +77,9 @@ public class Drivetrain extends SubsystemBase {
 
           m_drivetrain.arcadeDrive(-speed, rightXAxis);
           if (leftYAxis<0) {
-            kP += (leftYAxis+speed)*-0.05;
+            kP += (leftYAxis+speed)*-0.035;
           } else {
-            kP += (leftYAxis-speed)*0.04;
+            kP += (leftYAxis-speed)*0.06;
           }
       } else {
           m_drivetrain.arcadeDrive(-speed, rightXAxis);
@@ -107,11 +107,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getLeftDistance() {
-    return m_leftEncoder.getPosition()*Constants.c_encoderRatio;
+    return m_leftEncoder.getPosition();
   }
 
   public double getRightDistance() {
-    return m_rightEncoder.getPosition()*Constants.c_encoderRatio;
+    return m_rightEncoder.getPosition();
   }
 
 
@@ -171,11 +171,12 @@ public class Drivetrain extends SubsystemBase {
       }
 
     } else {
+      //only this on
 
-      while ((Math.abs(getLeftDistance())) < Math.abs(leftArcLen)) {
+      while ((Math.abs(getLeftDistance())) < Math.abs(_angle)) {
         SmartDashboard.putNumber("Left Distance", getLeftDistance());
         SmartDashboard.putNumber("Right Distance", getRightDistance());
-        m_drivetrain.tankDrive(_speed, _speed*(rightArcLen/leftArcLen));
+        m_drivetrain.tankDrive(_speed, 0);
 
       }
     }
